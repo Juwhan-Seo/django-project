@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block con %}
+    <h1><b>번역해ZOOM</b></h1>
+
+    <form name="transForm">
+        <div class="row mt-5">
+            <div class="col-sm-5">
+                <textarea placeholder="번역할 문장을 입력해주세요" name="bf" class="form-control" style="height: 250px; font-size: 30px;">{{ btext }}</textarea>
+            </div>
+            <div class="col-sm-2">
+                <select class="form-select" name="fr">
+                    {% for code, name in ndict.items %}
+                        <option value="{{code}}" {% if fr %}{% if fr == code %} selected {% endif %}{% else %}{% if code == 'en' %} selected {% endif %}{% endif %}>{{name|upper}}</option>
+                    {% endfor %}
+                </select>
+                <button type="button" onclick="check()" class="btn btn-dark mt-4 mb-2" style="width: 100%;">번역</button>
+                <a href="{% url 'trans:index' %}?fr={{to}}&to={{fr}}&bf={{atext}}"><button type="button" class="btn btn-dark mt-2 mb-4" style="width: 100%;" {% if not atext %} disabled {% endif %}>체인지</button></a>
+
+                <select class="form-select" name="to">
+                    {% for code, name in ndict.items %}
+                        <option value="{{code}}" {% if to %}{% if to == code %} selected {% endif %}{% else %}{% if code == 'ko' %}selected{% endif %}{% endif %}>{{name|upper}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-5">
+                <textarea class="form-control" style="height: 250px; font-size: 30px;" disabled>{{ atext }}</textarea>
+            </div>
+        </div>
+    </form>
+    <script>
+        function check(){
+            tf = document.transForm;
+            if(!tf.bf.value){
+                alert("번역할 문장을 입력해주세요 ...");
+            }else if(tf.fr.value == tf.to.value){
+                alert("서로 다른 나라를 선택해주세요 ...");
+            }else{
+                tf.submit();
+            }
+        }
+    </script>
+{% endblock %}

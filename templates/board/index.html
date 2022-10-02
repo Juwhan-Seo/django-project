@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block con %}
+   {% load mathfilters %}
+
+    <h1><b>SH BOARD</b></h1>
+
+    <div class="text-end">
+        <a href="{% url 'board:create' %}" class="btn btn-dark">게시글생성</a>
+    </div>
+
+    <table class="table mt-5 table-hover">
+        <thead>
+            <tr class="table-dark">
+                <th scope="col">순번</th>
+                <th scope="col">제목</th>
+                <th scope="col">내용</th>
+                <th scope="col">작성자</th>
+                <th scope="col">좋아요</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for i in bset %}
+                <tr>
+                    <th scope="row">{{ bset.start_index|add:forloop.counter0 }}</th>
+                    <td><a class="sub" href="{% url 'board:detail' i.id %}">{{ i.subject }}</a></td>
+                    <td>{{ i.content|truncatewords:10 }}</td>
+                    <td>{{ i.writer }}</td>
+                    <td>{{ i.likey.count }}</td>
+                </tr>
+            {% empty %}
+                
+                    <tr>
+                        <th colspan="5" class="text-center">{% if kw %}검색결과가 없습니다...{% else %}첫번째 게시글을 작성해주세요!!{% endif %}</th>
+                    </tr>
+                
+                
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <form>
+        <div class="mt-4 mb-4 row">
+
+            <div class="col-sm-2">
+                <select class="form-select" name="cate">
+                    <option value="sub" {% if cate == "sub" %}selected{% endif %}>제목</option>
+                    <option value="wri" {% if cate == "wri" %}selected{% endif %}>작성자</option>
+                    <option value="con" {% if cate == "con" %}selected{% endif %}>내용</option>
+                </select>
+            </div>
+
+            <div class="col-sm-8">
+                <input type="text" name="kw" value="{{kw}}" class="form-control" placeholder="키워드를 입력하세요">
+            </div>
+
+            <div class="col-sm-1">
+                <button class="btn btn-dark" style="width:100%">검색</button>
+            </div>
+
+            <div class="col-sm-1">
+                <a href="{% url 'board:index' %}"><button type="button" class="btn btn-dark" style="width:100%">리셋</button></a>
+            </div>
+
+
+        </div>
+    </form>
+    
+    
+    <nav aria-label="Page navigation example" class="mt-5">
+        <ul class="pagination justify-content-center">
+            
+            {% if bset.has_previous %}
+                <li class="page-item"><a class="page-link" href="{% url 'board:index' %}?page=1">처음</a></li>
+                <li class="page-item"><a class="page-link" href="{% url 'board:index' %}?page={{bset.previous_page_number}}">이전</a></li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link">처음</a></li>
+                <li class="page-item disabled"><a class="page-link">이전</a></li>
+            {% endif %}
+
+
+            {% for i in bset.paginator.page_range %}
+                {% if i >= bset.number|sub:4 and bset.number|add:5 >= i %}
+                    <li class="page-item {% if bset.number == i %}active{% endif %}"><a class="page-link" href="{% url 'board:index' %}?page={{i}}">{{i}}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if bset.has_next %}
+                <li class="page-item"><a class="page-link" href="{% url 'board:index' %}?page={{bset.next_page_number}}">다음</a></li>
+                <li class="page-item"><a class="page-link" href="{% url 'board:index' %}?page={{bset.paginator.num_pages}}">마지막</a></li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link">다음</a></li>
+                <li class="page-item disabled"><a class="page-link">마지막</a></li>
+            {% endif %}
+
+            
+        </ul>
+    </nav>
+
+
+
+
+
+
+
+    
+    <style>
+        .sub {
+            text-decoration: none;
+            font-weight: bold;
+            color: black;
+        }
+        .sub:hover{
+            color:blue;
+            font-size: 17px;
+        }
+    </style>
+
+
+{% endblock %}

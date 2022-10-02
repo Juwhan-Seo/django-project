@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block con %}
+
+    {% if user.is_authenticated %}
+        <h4>{{user}}! HAVE A NICE DAY :)</h4>
+    {% else %}
+        <h4>LOGIN FIRST!</h4>
+    {% endif %}
+
+{% endblock %}

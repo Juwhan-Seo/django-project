@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block con %}
+    <h1><b>{{ t.subject }}</b></h1>
+    
+    <form>
+        <div>
+            <div class="row mt-4">
+                <div class="col-sm-8">
+                    <textarea class="form-control" disabled style="height: 200px;">{{ t.content }}</textarea>
+                </div>
+            </div>
+            <div calss="col-sm-4">
+                <img src="{{ t.maker.getpic }}" width="100%">
+                <div class="text-ceneter mt-3"><b>{{ t.maker }}</b></div>
+            </div>
+        </div>
+
+
+        <form method="post" action="{% url 'vote:vote' t.id %}"
+        {{% csrf_token %}}
+        <div class="row mt-4">
+            <div class="col-sm-4">
+                <input type="radio"> 선택지 이름
+                <textarea class="form-control mt-3" style="height: 100px;" disabled></textarea>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}

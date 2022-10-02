@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block con %}
+    <h1><b>프로필 수정</b></h1>
+
+    <form method="post" class="mt-5" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" name="uname" class="form-control" value="{{user}}" disabled>
+        <input type="email" name="umail" class="form-control mt-4 mb-4" value="{{ user.email }}">
+        <input type="file" name="upic" class="form-control">
+        <textarea cols="50" rows="5"  class="form-control mt-4" name="ucomm">{{ user.comment }}</textarea>
+        <div class="text-end mt-5">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                패스워드변경
+            </button>
+            <button class="btn btn-success">수정완료</button>
+        </div> 
+    </form>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">패스워드 변경창</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="{% url 'acc:chpass' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <input class="form-control mt-3 mb-3" type="password" name="cpass" placeholder="INPUT CURRENT PASSWORD">
+                        <input class="form-control mb-3" type="password" name="npass" placeholder="INPUT NEW PASSWORD">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button class="btn btn-primary">변경</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

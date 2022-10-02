@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block con %}
+    <h1><b>회원가입</b></h1>
+
+    <form name="registForm" method="post" class="mt-5" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" name="uname" class="form-control" placeholder="INPUT USERNAME">
+        <input type="password" name="upass" class="form-control mt-4 mb-4" placeholder="INPUT PASSWORD">
+        <input type="file" name="upic" class="form-control">
+        <textarea cols="50" rows="5"  class="form-control mt-5" name="ucomm" placeholder="INPUT COMMENT"></textarea>
+        <div class="text-end mt-5">
+            <button type="button" onclick="check()" class="btn btn-success">회원가입</button>
+        </div> 
+    </form>
+    <script>
+        function check(){
+            rf = document.registForm;
+            if (!rf.uname.value){
+                alert("유저네임을 입력하세요");
+            }else if(!rf.upass.value){
+                alert("패스워드를 입력하세요");
+            }else if(rf.ucomm.value.length < 5){
+                alert("자기소개는 5자이상...");
+            }else{
+                rf.submit();
+            }
+        }
+    </script>
+
+{% endblock %}

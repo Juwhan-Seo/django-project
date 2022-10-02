@@ -1,0 +1,53 @@
+
+{% extends 'base.html' %}
+{% block con %}
+    <h1><b>USER 프로필</b></h1>
+
+
+    <div class="row">
+        <div class="col-sm-4 text-center" style="margin: auto;">
+            <img src="{{user.getpic}}" width="90%">
+        </div>
+        <div class="col-sm-8">
+            <b>USERNAME</b>
+            <input type="text" value="{{ user }}" class="form-control mt-3 mb-4" disabled>
+            <b>POINT</b>
+            <input type="text" value="{{ user.point }} P" class="form-control mt-3 mb-4" disabled>
+            <b>EMAIL</b>
+            <input type="text" value="{{ user.email }}" class="form-control mt-3 mb-4" disabled>
+        </div>
+    </div>
+
+    <textarea class="form-control mt-2" style="height: 180px;" disabled>{{user.comment}}</textarea>
+
+    <div class="text-end mt-4">
+        <a href="{% url 'acc:update' %}"><button class="btn btn-secondary">프로필수정</button></a>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            계정삭제
+        </button>
+    </div>
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">계정삭제 알림창</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <form method="post" action="{% url 'acc:delete' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <b>패스워드 확인</b>
+                        <input type="password" name="pwck" class="form-control mt-3" placeholder="INPUT PASSWORD">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button class="btn btn-danger">삭제</button>
+                    </div> 
+                </form>
+            </div>
+        </div>
+      </div>
+{% endblock %}
